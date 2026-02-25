@@ -3,6 +3,44 @@
    Hierarquia completa · Agenda · Mural · Atas · Admin
 ══════════════════════════════════════════════════════════ */
 
+// Suppress extension message errors
+if(typeof chrome !== 'undefined' && chrome.runtime) {
+  chrome.runtime.onMessage?.addListener((request, sender, sendResponse) => {
+    try { sendResponse({status: 'ok'}); } catch(e) { }
+    return true;
+  });
+}
+
+// Handle window messages from extensions
+window.addEventListener('message', (event) => {
+  try {
+    if(event.source && event.source === window && event.data && typeof event.data === 'object') {
+      // Silently handle extension messages
+    }
+  } catch(e) { }
+});
+
+// Suppress unhandled promise rejections from browser extensions
+window.addEventListener('unhandledrejection', (event) => {
+  if(event.reason && (
+    event.reason.message?.includes('message channel closed') ||
+    event.reason.message?.includes('Extension context invalidated') ||
+    event.reason.message?.includes('The port closed before a response was received')
+  )) {
+    event.preventDefault();
+  }
+});
+
+// Also suppress console errors from extension messaging
+const originalError = console.error;
+console.error = function(...args) {
+  if(args[0]?.message?.includes('message channel closed') || 
+     String(args[0]).includes('message channel closed')) {
+    return; // Silently ignore
+  }
+  originalError.apply(console, args);
+};
+
 const SUPA_URL = 'https://plrqrubxphintvioqqoe.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBscnFydWJ4cGhpbnR2aW9xcW9lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5NjAxMDIsImV4cCI6MjA4NzUzNjEwMn0.miWgsjOVkn7TnNOGCFABVWQ_EbTLtgeCV-Yaeoq55MY';
 const db = window.supabase.createClient(SUPA_URL, SUPA_KEY);
@@ -217,7 +255,11 @@ window.fecharModal = id => document.getElementById(id)?.classList.remove('open')
 function initializeApp() {
   // Listeners de navegação
   document.querySelectorAll('.nav-link[data-page]').forEach(b =>
-    b.addEventListener('click', () => irPara(b.dataset.page))
+    b.addEventListener('click', () => {
+      irPara(b.dataset.page);
+      // Close sidebar on mobile after navigation
+      fecharSidebar();
+    })
   );
 
   // Modal click handler
@@ -269,14 +311,12 @@ function initializeApp() {
     
     const cargo = document.getElementById('r-cargo')?.value || 'irmao';
     const bday  = document.getElementById('r-bday')?.value || null;
-    const job   = (document.getElementById('r-job')?.value || '').trim() || null;
-    const wpp   = (document.getElementById('r-wpp')?.value || '').trim() || null;
     
     setBtn('btn-reg', true, 'Criando...');
     try {
       const {error} = await db.from('perfis').insert([{
         nome, usuario:user, senha:pass, cargo,
-        data_aniversario:bday, trabalho:job, whatsapp:wpp,
+        data_aniversario:bday,
         insignias:[], privs_custom:[]
       }]);
       if(error) {
@@ -448,14 +488,17 @@ async function carregarFeed() {
     atualizarMeta(total);
 
     document.getElementById('feed-cotas').innerHTML = cotas.length
-      ? cotas.map(c=>`
+      ? cotas.slice(0, 3).map(c=>`
           <div class="feed-cota-row">
             <div class="cota-av ${c.status==='pago'?'pago':'pendente'}">${inic(c.perfis?.nome||c.nome_membro)}</div>
-            <span class="cota-nome">${c.perfis?.nome||c.nome_membro||'—'}</span>
-            <span class="cota-tag ${c.status==='pago'?'pago':'pendente'}">${c.status==='pago'?'Pago':'Pendente'}</span>
+            <span class="cota-nome">${(c.perfis?.nome||c.nome_membro||'—').split(' ')[0]}</span>
             <span class="cota-valor">${c.status==='pago'?fmt$(c.valor):''}</span>
+            <button class="cota-edit-btn" onclick="editarCota('${c.id}','${c.status}','${c.valor}')" title="Editar">
+              <i class="fas fa-pen"></i>
+            </button>
           </div>
-        `).join('')
+        `).join('') + 
+        (cotas.length > 3 ? `<button class="btn-ver-mais" onclick="irPara('financeiro')"><i class="fas fa-arrow-right"></i> Ver mais (${cotas.length - 3})</button>` : '')
       : '<p class="empty-state">Nenhuma cota registrada neste mês.</p>';
   }
 
@@ -545,17 +588,9 @@ window.carregarCotas = async function() {
   lista.innerHTML = data.map((c,i)=>`
     <div class="cota-item">
       <div class="cota-av ${c.status==='pago'?'pago':'pendente'}">${inic(c.perfis?.nome||c.nome_membro)}</div>
-      <span class="cota-nome">${c.perfis?.nome||c.nome_membro||'—'}</span>
-      <span class="cota-tag ${c.status==='pago'?'pago':'pendente'}">${c.status==='pago'?'Pago':'Pendente'}</span>
+      <span class="cota-nome">${(c.perfis?.nome||c.nome_membro||'—').split(' ')[0]}</span>
       <span class="cota-valor">${c.status==='pago'?fmt$(c.valor):''}</span>
-      ${ehTes?`
-        <div class="cota-actions">
-          ${c.status!=='pago'
-            ?`<button class="cota-btn confirmar" onclick="confirmarPag('${c.id}')">Confirmar</button>`
-            :`<button class="cota-btn reverter" onclick="reverterPag('${c.id}')">Reverter</button>`
-          }
-        </div>
-      `:''}
+      ${ehTes?`<button class="cota-edit-btn" onclick="editarCota('${c.id}','${c.status}','${c.valor}')" title="Editar"><i class="fas fa-pen"></i></button>`:''}
     </div>
   `).join('');
 };
@@ -576,6 +611,26 @@ window.reverterPag = async function(id) {
   const {error} = await db.from('cotas').update({status:'pendente',valor:0}).eq('id',id);
   if(error) return toast('Erro ao reverter.','err');
   toast('Pagamento revertido.','info');
+  carregarCotas(); carregarFeed();
+};
+
+window.editarCota = async function(id, status, valor) {
+  let opcao = confirm(`${status==='pago'?'Reverter este pagamento?':'Mudar para pago?'}`);
+  if(!opcao) return;
+  
+  if(status==='pago') {
+    const {error} = await db.from('cotas').update({status:'pendente',valor:0}).eq('id',id);
+    if(error) return toast('Erro ao reverter.','err');
+    toast('Pagamento revertido.','info');
+  } else {
+    const valorStr = prompt('Valor pago (R$):', '10');
+    if(valorStr===null) return;
+    const novoValor = parseFloat(valorStr.replace(',','.'));
+    if(isNaN(novoValor)||novoValor<10) return toast('Valor inválido. Mínimo R$ 10.','err');
+    const {error} = await db.from('cotas').update({status:'pago',valor:novoValor}).eq('id',id);
+    if(error) return toast('Erro ao atualizar.','err');
+    toast(`Pagamento de ${fmt$(novoValor)} confirmado!`);
+  }
   carregarCotas(); carregarFeed();
 };
 

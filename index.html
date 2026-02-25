@@ -15,6 +15,37 @@
 <link rel="stylesheet" href="responsive.css">
 </head>
 <body>
+<script>
+// Suppress all extension-related errors
+window.addEventListener('unhandledrejection', event => {
+  const msg = event.reason?.message || event.reason?.toString() || '';
+  if(msg.includes('message channel closed') || 
+     msg.includes('Extension context invalidated') ||
+     msg.includes('The port closed before a response was received')) {
+    event.preventDefault();
+  }
+});
+
+// Suppress extension messaging errors
+if(window.chrome?.runtime) {
+  const originalAddListener = window.chrome.runtime.onMessage?.addListener;
+  if(originalAddListener) {
+    window.chrome.runtime.onMessage.addListener = function(callback) {
+      return originalAddListener.call(this, (request, sender, sendResponse) => {
+        try {
+          const result = callback(request, sender, sendResponse);
+          if(result === true) {
+            try { sendResponse({ok: true}); } catch(e) { }
+          }
+          return result;
+        } catch(e) {
+          return false;
+        }
+      });
+    };
+  }
+}
+</script>
 
 <!-- ═══ LOGIN ══════════════════════════════════════════════ -->
 <div id="screen-login" class="screen">
@@ -84,14 +115,6 @@
           <div class="field">
             <label><i class="fas fa-birthday-cake"></i> Aniversário</label>
             <input type="date" id="r-bday">
-          </div>
-          <div class="field">
-            <label><i class="fas fa-briefcase"></i> Profissão</label>
-            <input type="text" id="r-job" placeholder="Ex: Engenheiro">
-          </div>
-          <div class="field span2">
-            <label><i class="fab fa-whatsapp"></i> WhatsApp</label>
-            <input type="text" id="r-wpp" placeholder="(xx) 9xxxx-xxxx">
           </div>
         </div>
         <div class="hint-box">
