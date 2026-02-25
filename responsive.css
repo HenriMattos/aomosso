@@ -1,0 +1,918 @@
+/* ══════════════════════════════════════════════════════════
+   AO MOSSO v4 — Responsividade Mobile/Tablet
+   Adicione este arquivo APÓS o style.css principal
+   <link rel="stylesheet" href="responsive.css">
+══════════════════════════════════════════════════════════ */
+
+/* ══ TABLET LARGO (≤ 1024px) ═══════════════════════════ */
+@media (max-width: 1024px) {
+  :root {
+    --sidebar: 220px;
+  }
+
+  .kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .shortcuts {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .two-col-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .fin-kpis {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .membros-grid {
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  }
+}
+
+/* ══ TABLET (≤ 768px) ════════════════════════════════════ */
+@media (max-width: 768px) {
+  :root {
+    --topbar: 54px;
+  }
+
+  /* Topbar mobile */
+  .topbar {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+  }
+
+  /* App body: sidebar escondida por padrão */
+  .app-body {
+    flex-direction: column;
+  }
+
+  /* Sidebar vira drawer lateral */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    z-index: 300;
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 16px 12px;
+    padding-top: 20px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 4px 0 30px rgba(0, 0, 0, 0.4);
+  }
+
+  .sidebar-overlay {
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s ease;
+  }
+
+  .sidebar-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* Main area ocupa tudo */
+  .main {
+    padding: 16px 14px 80px;
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Page header empilha em mobile */
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding-bottom: 14px;
+  }
+
+  .page-header h2 {
+    font-size: 19px;
+  }
+
+  .header-acts {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .header-acts .btn-main,
+  .header-acts .btn-outline {
+    flex: 1;
+    justify-content: center;
+    min-height: 42px;
+  }
+
+  .header-acts select.select-styled {
+    width: 100%;
+    flex: 1 1 100%;
+    order: -1;
+  }
+
+  /* KPI Row: 2 colunas em tablet, 1 em mobile pequeno */
+  .kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .kpi-card {
+    padding: 13px 14px;
+  }
+
+  .kpi-body strong {
+    font-size: 17px;
+  }
+
+  .kpi-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
+  }
+
+  /* Meta card */
+  .meta-card {
+    padding: 18px 16px;
+  }
+
+  .meta-header {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .meta-values {
+    align-self: flex-start;
+  }
+
+  .meta-current {
+    font-size: 20px;
+  }
+
+  /* Two col: uma coluna */
+  .two-col-layout {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Financeiro KPIs: 2x2 */
+  .fin-kpis {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .fk-value {
+    font-size: 19px;
+  }
+
+  /* Cota item mobile */
+  .cota-item {
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .cota-nome {
+    flex: 1 1 60%;
+    font-size: 13px;
+  }
+
+  .cota-valor {
+    min-width: auto;
+    font-size: 12px;
+  }
+
+  .cota-actions {
+    width: 100%;
+    justify-content: flex-end;
+    margin-left: 0;
+    padding-top: 4px;
+    border-top: 1px solid var(--border);
+  }
+
+  .cota-btn {
+    flex: 1;
+    text-align: center;
+  }
+
+  /* Membros grid */
+  .membros-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+
+  .membro-card {
+    padding: 14px;
+  }
+
+  .mc-av {
+    width: 42px;
+    height: 42px;
+    font-size: 15px;
+    margin-bottom: 9px;
+  }
+
+  /* Search bar */
+  .search-bar {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .search-bar input {
+    width: 100%;
+  }
+
+  /* Cargo filter scroll horizontal */
+  .cargo-filter {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .cargo-filter::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cargo-filter-btn {
+    flex-shrink: 0;
+  }
+
+  /* Agenda cards */
+  .agenda-card {
+    padding: 13px 14px;
+    gap: 12px;
+  }
+
+  .agenda-date-block {
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+  }
+
+  .agenda-date-block .day {
+    font-size: 17px;
+  }
+
+  .agenda-title {
+    font-size: 14px;
+  }
+
+  /* Shortcuts: 3 colunas */
+  .shortcuts {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .shortcut {
+    padding: 13px 8px;
+    font-size: 11px;
+  }
+
+  .sh-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 15px;
+  }
+
+  /* Eleição cards */
+  .el-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .el-actions {
+    flex-wrap: wrap;
+  }
+
+  .result-nome {
+    min-width: 90px;
+    font-size: 12px;
+  }
+
+  /* Mural: coluna única */
+  .mural-lista {
+    grid-template-columns: 1fr;
+  }
+
+  /* Admin grid: 1 coluna */
+  .admin-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  /* Mídia grid */
+  .midia-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+  }
+
+  /* Mídia tabs scroll */
+  .midia-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .midia-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mtab {
+    flex-shrink: 0;
+    padding: 7px 12px;
+    font-size: 12px;
+  }
+
+  /* Modal: full bottom sheet */
+  .modal-bg {
+    align-items: flex-end;
+  }
+
+  .modal {
+    max-width: 100%;
+    border-radius: 20px 20px 0 0;
+    padding: 20px 16px;
+    max-height: 92vh;
+  }
+
+  .modal-lg {
+    max-width: 100%;
+  }
+
+  /* Modal handle visual */
+  .modal::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border-2);
+    margin: -8px auto 16px;
+  }
+
+  .modal-btns {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .modal-btns button {
+    width: 100%;
+    justify-content: center;
+    min-height: 46px;
+  }
+
+  /* Perfil modal */
+  .perfil-infos {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .perfil-top {
+    gap: 12px;
+  }
+
+  .perfil-nome {
+    font-size: 17px;
+  }
+
+  .perfil-admin-btns {
+    flex-direction: column;
+  }
+
+  .perfil-admin-btns button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Insígnia grid */
+  .insignia-grid {
+    gap: 6px;
+  }
+
+  .ins-opt {
+    min-width: 58px;
+    padding: 9px 6px;
+  }
+
+  /* Access checks */
+  .access-checks {
+    grid-template-columns: 1fr;
+  }
+
+  /* Fields 2col: vira 1 col */
+  .fields-2col {
+    grid-template-columns: 1fr;
+  }
+
+  .span2 {
+    grid-column: 1;
+  }
+
+  /* Votar modal candidatos */
+  .candidato-btn {
+    padding: 12px 13px;
+  }
+
+  .candidato-nome {
+    font-size: 13px;
+  }
+
+  /* Notif panel */
+  .notif-panel {
+    right: 8px;
+    left: 8px;
+    width: auto;
+    top: calc(var(--topbar) + 6px);
+  }
+
+  /* Toast: bottom full */
+  #toasts {
+    bottom: 14px;
+    right: 14px;
+    left: 14px;
+  }
+
+  .toast {
+    max-width: 100%;
+  }
+
+  /* Login */
+  .login-wrap {
+    padding: 16px;
+  }
+
+  .login-title {
+    font-size: 28px;
+  }
+
+  .login-emblem {
+    width: 60px;
+    height: 60px;
+    font-size: 22px;
+  }
+
+  .card {
+    padding: 18px 16px;
+  }
+
+  .tab {
+    padding: 9px 6px;
+    font-size: 12px;
+  }
+}
+
+/* ══ MOBILE PEQUENO (≤ 480px) ════════════════════════════ */
+@media (max-width: 480px) {
+
+  .main {
+    padding: 12px 10px 80px;
+  }
+
+  /* KPI: 1x4 em telas muito pequenas */
+  .kpi-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .kpi-card {
+    padding: 10px 11px;
+    gap: 10px;
+  }
+
+  .kpi-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 14px;
+    border-radius: 9px;
+  }
+
+  .kpi-body strong {
+    font-size: 15px;
+  }
+
+  .kpi-body span {
+    font-size: 10px;
+  }
+
+  /* Shortcuts: 3 colunas compactos */
+  .shortcuts {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .shortcut {
+    padding: 11px 6px;
+    font-size: 10px;
+    border-radius: 10px;
+  }
+
+  .sh-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+
+  /* Membros: 2 colunas */
+  .membros-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .membro-card {
+    padding: 12px 10px;
+  }
+
+  .mc-av {
+    width: 38px;
+    height: 38px;
+    font-size: 13px;
+  }
+
+  .mc-name {
+    font-size: 12px;
+  }
+
+  /* Fin KPI: 2x2 compacto */
+  .fin-kpis {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .fin-kpi {
+    padding: 11px 12px;
+  }
+
+  .fk-value {
+    font-size: 17px;
+  }
+
+  .fk-label {
+    font-size: 9px;
+  }
+
+  /* Midia: 1 coluna */
+  .midia-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Agenda card compacto */
+  .agenda-card {
+    padding: 11px 12px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .agenda-date-block {
+    width: 42px;
+    height: 42px;
+  }
+
+  .agenda-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .agenda-title {
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .agenda-tipo-badge {
+    font-size: 9px;
+    padding: 2px 7px;
+  }
+
+  /* Eleição result */
+  .result-row {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .result-nome {
+    min-width: 100%;
+    font-size: 12px;
+  }
+
+  .result-bar-wrap {
+    flex: 1;
+  }
+
+  /* Page header */
+  .page-header h2 {
+    font-size: 17px;
+  }
+
+  /* Ata header */
+  .ata-header {
+    gap: 10px;
+  }
+
+  .ata-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  /* Feed cota row */
+  .feed-cota-row {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .cota-nome {
+    font-size: 13px;
+  }
+
+  .cota-tag {
+    font-size: 10px;
+    padding: 3px 7px;
+  }
+
+  /* Meta card */
+  .meta-current {
+    font-size: 18px;
+  }
+
+  .meta-target {
+    font-size: 14px;
+  }
+
+  /* Perfil infos: 1 coluna */
+  .perfil-infos {
+    grid-template-columns: 1fr;
+  }
+
+  /* Tab row */
+  .tab-row {
+    gap: 3px;
+  }
+
+  .tab {
+    padding: 8px 4px;
+    font-size: 11px;
+  }
+
+  /* Modal */
+  .modal {
+    padding: 16px 14px;
+  }
+
+  .modal-head h3 {
+    font-size: 15px;
+  }
+}
+
+/* ══ MOBILE MUITO PEQUENO (≤ 360px) ═════════════════════ */
+@media (max-width: 360px) {
+
+  .kpi-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .shortcuts {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .membros-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .fin-kpis {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .main {
+    padding: 10px 8px 80px;
+  }
+
+  .page-header h2 {
+    font-size: 16px;
+  }
+
+  .cargo-badge {
+    font-size: 9px;
+    padding: 2px 7px;
+  }
+}
+
+/* ══ MELHORIAS DE TOUCH ══════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* Aumenta área de toque */
+  .nav-link {
+    padding: 11px;
+    min-height: 44px;
+  }
+
+  .cota-btn {
+    min-height: 38px;
+  }
+
+  .cargo-filter-btn {
+    min-height: 36px;
+    padding: 7px 13px;
+  }
+
+  .mtab {
+    min-height: 38px;
+  }
+
+  /* Remove hover effects em touch */
+  .membro-card:hover,
+  .kpi-card:hover,
+  .shortcut:hover,
+  .midia-card:hover,
+  .agenda-card:hover {
+    transform: none;
+  }
+
+  /* Active states para mobile */
+  .membro-card:active {
+    transform: scale(0.98);
+    transition: transform 0.1s;
+  }
+
+  .shortcut:active {
+    transform: scale(0.96);
+    transition: transform 0.1s;
+  }
+
+  .btn-main:active,
+  .btn-outline:active {
+    transform: scale(0.98);
+    transition: transform 0.1s;
+  }
+
+  /* Scroll smooth nos containers */
+  .main,
+  .sidebar,
+  .notif-list,
+  .modal {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Select mais visível */
+  .select-styled {
+    font-size: 16px; /* previne zoom iOS */
+    min-height: 44px;
+  }
+
+  /* Input mais alto para touch */
+  .field input {
+    min-height: 44px;
+    font-size: 16px; /* previne zoom iOS */
+  }
+
+  textarea {
+    font-size: 16px !important; /* previne zoom iOS */
+  }
+}
+
+/* ══ SAFE AREA (iPhone com notch/Dynamic Island) ════════ */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .main {
+    padding-bottom: max(80px, calc(16px + env(safe-area-inset-bottom)));
+  }
+
+  #toasts {
+    bottom: max(14px, env(safe-area-inset-bottom));
+  }
+
+  .sidebar {
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+  }
+
+  .topbar {
+    padding-top: env(safe-area-inset-top);
+    height: calc(var(--topbar) + env(safe-area-inset-top));
+  }
+}
+
+/* ══ BOTTOM NAV MOBILE (opcional: navegação rápida) ═════
+   Adicione o HTML do bottom-nav abaixo do screen-app se quiser usar
+══════════════════════════════════════════════════════════ */
+.bottom-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 58px;
+    background: var(--navy);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 150;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 4px;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  .bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    flex: 1;
+    padding: 8px 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.4);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    transition: color 0.15s;
+    position: relative;
+  }
+
+  .bottom-nav-item i {
+    font-size: 18px;
+  }
+
+  .bottom-nav-item.active {
+    color: var(--gold);
+  }
+
+  .bottom-nav-item .bnav-badge {
+    position: absolute;
+    top: 4px;
+    right: calc(50% - 16px);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--rose);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--navy);
+  }
+}
+
+/* ══ PRINT (sem sidebar/topbar) ══════════════════════════ */
+@media print {
+  .sidebar,
+  .topbar,
+  .btn-main,
+  .btn-outline,
+  .btn-ghost,
+  .header-acts,
+  #toasts {
+    display: none !important;
+  }
+
+  .main {
+    padding: 0;
+  }
+
+  .page {
+    display: flex !important;
+  }
+}
+
+/* ══ LANDSCAPE MOBILE ════════════════════════════════════ */
+@media (max-width: 768px) and (orientation: landscape) {
+  .modal {
+    max-height: 96vh;
+  }
+
+  .kpi-row {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .shortcuts {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}

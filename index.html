@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0d1b2a">
+<meta name="color-scheme" content="light dark">
+<title>AoMosso — Gestão do Grupo AOMOSSO</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+
+<!-- ═══ LOGIN ══════════════════════════════════════════════ -->
+<div id="screen-login" class="screen">
+  <div class="login-bg">
+    <div class="login-geometric"></div>
+    <div class="login-geometric g2"></div>
+    <div class="login-geometric g3"></div>
+  </div>
+  <div class="login-wrap">
+    <div class="login-top">
+      <div class="login-emblem">
+        <i class="fas fa-compass"></i>
+      </div>
+      <h1 class="login-title">Ao Mosso</h1>
+      <p class="login-sub">Plataforma Oficial</p>
+    </div>
+    <div class="card">
+      <div class="tab-row">
+        <button class="tab active" data-tab="entrar">Entrar</button>
+        <button class="tab" data-tab="registrar">Registrar</button>
+      </div>
+      <form id="form-login">
+        <div class="field">
+          <label><i class="fas fa-user"></i> Usuário</label>
+          <input type="text" id="l-user" placeholder="seu.usuario" autocomplete="username">
+        </div>
+        <div class="field">
+          <label><i class="fas fa-lock"></i> Senha</label>
+          <input type="password" id="l-pass" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <div class="form-msg" id="l-err"></div>
+        <button type="submit" class="btn-main full" id="btn-entrar">
+          <i class="fas fa-sign-in-alt"></i> Entrar
+        </button>
+      </form>
+      <form id="form-reg">
+        <div class="fields-2col">
+          <div class="field span2">
+            <label><i class="fas fa-signature"></i> Nome completo</label>
+            <input type="text" id="r-nome" placeholder="Seu nome completo">
+          </div>
+          <div class="field">
+            <label><i class="fas fa-at"></i> Usuário</label>
+            <input type="text" id="r-user" placeholder="sem espaços">
+          </div>
+          <div class="field">
+            <label><i class="fas fa-key"></i> Senha</label>
+            <input type="password" id="r-pass" placeholder="mínimo 4 chars">
+          </div>
+          <div class="field span2">
+            <label><i class="fas fa-medal"></i> Cargo</label>
+            <select id="r-cargo" class="select-styled" style="width:100%">
+              <option value="irmao">Irmão (Membro)</option>
+              <option value="representante">Representante</option>
+              <option value="vice-rep">Vice-Representante</option>
+              <option value="presidente">Presidente</option>
+              <option value="vice-pres">Vice-Presidente</option>
+              <option value="tesoureiro">Tesoureiro</option>
+              <option value="vice-tes">Vice-Tesoureiro</option>
+              <option value="secretario">Secretário</option>
+              <option value="vice-sec">Vice-Secretário</option>
+              <option value="orador">Orador Oficial</option>
+              <option value="fiscal">Fiscal Oficial</option>
+              <option value="organizadora">Organizadora Oficial</option>
+            </select>
+          </div>
+          <div class="field">
+            <label><i class="fas fa-birthday-cake"></i> Aniversário</label>
+            <input type="date" id="r-bday">
+          </div>
+          <div class="field">
+            <label><i class="fas fa-briefcase"></i> Profissão</label>
+            <input type="text" id="r-job" placeholder="Ex: Engenheiro">
+          </div>
+          <div class="field span2">
+            <label><i class="fab fa-whatsapp"></i> WhatsApp</label>
+            <input type="text" id="r-wpp" placeholder="(xx) 9xxxx-xxxx">
+          </div>
+        </div>
+        <div class="hint-box">
+          <i class="fas fa-info-circle"></i>
+          O cargo define seus privilégios na plataforma. O Representante pode alterar cargos depois.
+        </div>
+        <div class="form-msg" id="r-err"></div>
+        <button type="submit" class="btn-main full" id="btn-reg">
+          <i class="fas fa-user-plus"></i> Criar conta
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ APP ════════════════════════════════════════════════ -->
+<div id="screen-app" class="screen">
+  <header class="topbar">
+    <button class="menu-toggle" id="menu-toggle"><i class="fas fa-bars"></i></button>
+    <div class="topbar-brand">
+      <i class="fas fa-compass"></i>
+      <span>Ao Mosso</span>
+    </div>
+    <div class="topbar-right">
+      <button class="topbar-notif" onclick="toggleNotifs()">
+        <i class="fas fa-bell"></i>
+        <span class="notif-dot" id="notif-dot"></span>
+      </button>
+      <div class="topbar-av" id="top-av">?</div>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-profile">
+        <div class="profile-av" id="sb-av">?</div>
+        <div class="profile-info">
+          <strong id="sb-nome">—</strong>
+          <span id="sb-cargo-tag" class="cargo-badge">Irmão</span>
+        </div>
+        <button class="logout-btn" onclick="fazerLogoff()" title="Sair">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-label">Principal</div>
+        <nav>
+          <button class="nav-link active" data-page="feed">
+            <span class="nav-icon"><i class="fas fa-home"></i></span>
+            <span>Painel</span>
+          </button>
+          <button class="nav-link" data-page="financeiro">
+            <span class="nav-icon"><i class="fas fa-coins"></i></span>
+            <span>Financeiro</span>
+            <span class="nav-badge" id="badge-fin"></span>
+          </button>
+          <button class="nav-link" data-page="membros">
+            <span class="nav-icon"><i class="fas fa-users"></i></span>
+            <span>Irmandade</span>
+          </button>
+          <button class="nav-link" data-page="agenda">
+            <span class="nav-icon"><i class="fas fa-calendar-days"></i></span>
+            <span>Agenda</span>
+            <span class="nav-badge blue" id="badge-agenda"></span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-label">Comunidade</div>
+        <nav>
+          <button class="nav-link" data-page="midia">
+            <span class="nav-icon"><i class="fas fa-record-vinyl"></i></span>
+            <span>Arquivo</span>
+          </button>
+          <button class="nav-link" data-page="votacao">
+            <span class="nav-icon"><i class="fas fa-scale-balanced"></i></span>
+            <span>Eleições</span>
+            <span class="nav-badge red" id="badge-vot"></span>
+          </button>
+          <button class="nav-link" data-page="mural">
+            <span class="nav-icon"><i class="fas fa-thumbtack"></i></span>
+            <span>Mural</span>
+          </button>
+          <button class="nav-link" data-page="atas">
+            <span class="nav-icon"><i class="fas fa-scroll"></i></span>
+            <span>Atas</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="nav-section priv-admin">
+        <div class="nav-label">Administração</div>
+        <nav>
+          <button class="nav-link priv-admin" data-page="admin">
+            <span class="nav-icon"><i class="fas fa-shield-halved"></i></span>
+            <span>Configurações</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="sidebar-footer">
+        <div id="sb-clock" class="sb-clock">00:00</div>
+        <div class="sb-date" id="sb-date">—</div>
+      </div>
+    </aside>
+    <div class="sidebar-overlay" id="sb-overlay"></div>
+
+    <main class="main">
+
+      <!-- ── FEED / PAINEL ──────────────────────────────── -->
+      <div class="page active" id="page-feed">
+        <div class="page-header">
+          <div>
+            <h2>Painel Geral</h2>
+            <p class="page-sub" id="feed-saudacao">Bem-vindo.</p>
+          </div>
+        </div>
+
+        <!-- KPIs -->
+        <div class="kpi-row">
+          <div class="kpi-card accent-gold">
+            <div class="kpi-icon"><i class="fas fa-vault"></i></div>
+            <div class="kpi-body">
+              <strong id="s-caixa">R$ 0,00</strong>
+              <span>Caixa do mês</span>
+            </div>
+          </div>
+          <div class="kpi-card accent-blue">
+            <div class="kpi-icon"><i class="fas fa-users"></i></div>
+            <div class="kpi-body">
+              <strong id="s-membros">0</strong>
+              <span>Irmãos ativos</span>
+            </div>
+          </div>
+          <div class="kpi-card accent-rose">
+            <div class="kpi-icon"><i class="fas fa-hourglass-half"></i></div>
+            <div class="kpi-body">
+              <strong id="s-pend">0</strong>
+              <span>Pendências</span>
+            </div>
+          </div>
+          <div class="kpi-card accent-green">
+            <div class="kpi-icon"><i class="fas fa-calendar-check"></i></div>
+            <div class="kpi-body">
+              <strong id="s-eventos">0</strong>
+              <span>Eventos este mês</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Meta -->
+        <div class="meta-card">
+          <div class="meta-card-bg"></div>
+          <div class="meta-card-content">
+            <div class="meta-header">
+              <div>
+                <h3>Meta da Confraternização</h3>
+                <p id="meta-status">Carregando...</p>
+              </div>
+              <div class="meta-values">
+                <span class="meta-current" id="meta-atual">R$ 0</span>
+                <span class="meta-sep">de</span>
+                <span class="meta-target" id="meta-total">R$ 500</span>
+              </div>
+            </div>
+            <div class="meta-progress-wrap">
+              <div class="meta-progress-fill" id="meta-progress" style="width:0%">
+                <div class="progress-shine"></div>
+              </div>
+            </div>
+            <div class="meta-footer">
+              <span id="meta-pct" class="meta-pct-label">0% atingido</span>
+              <button class="btn-ghost sm priv-tesoureiro priv-representante" id="btn-edit-meta" onclick="abrirModalMeta()">
+                <i class="fas fa-pen"></i> Editar meta
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="two-col-layout">
+          <!-- Aniversariantes -->
+          <div class="panel">
+            <div class="panel-header">
+              <h3><i class="fas fa-cake-candles"></i> Aniversários do Mês</h3>
+            </div>
+            <div id="feed-anivs" class="feed-anivs">
+              <p class="empty-state">Nenhum aniversário este mês.</p>
+            </div>
+          </div>
+
+          <!-- Próximos eventos -->
+          <div class="panel">
+            <div class="panel-header">
+              <h3><i class="fas fa-calendar-star"></i> Próximos Eventos</h3>
+              <button class="btn-ghost sm priv-orador priv-representante priv-secretario" onclick="irPara('agenda')">Ver todos</button>
+            </div>
+            <div id="feed-eventos" class="feed-eventos">
+              <p class="empty-state">Nenhum evento agendado.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Status de cotas -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3><i class="fas fa-coins"></i> Status de <span id="feed-mes-label">—</span></h3>
+          </div>
+          <div id="feed-cotas" class="cotas-feed"></div>
+        </div>
+
+        <!-- Acesso rápido -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3><i class="fas fa-bolt"></i> Acesso Rápido</h3>
+          </div>
+          <div class="shortcuts">
+            <button class="shortcut" onclick="irPara('financeiro')">
+              <span class="sh-icon blue"><i class="fas fa-coins"></i></span>
+              <span>Cotas</span>
+            </button>
+            <button class="shortcut" onclick="irPara('membros')">
+              <span class="sh-icon gold"><i class="fas fa-users"></i></span>
+              <span>Irmãos</span>
+            </button>
+            <button class="shortcut" onclick="irPara('agenda')">
+              <span class="sh-icon green"><i class="fas fa-calendar-days"></i></span>
+              <span>Agenda</span>
+            </button>
+            <button class="shortcut" onclick="irPara('votacao')">
+              <span class="sh-icon rose"><i class="fas fa-scale-balanced"></i></span>
+              <span>Eleições</span>
+            </button>
+            <button class="shortcut" onclick="irPara('midia')">
+              <span class="sh-icon purple"><i class="fas fa-record-vinyl"></i></span>
+              <span>Arquivo</span>
+            </button>
+            <button class="shortcut" onclick="irPara('mural')">
+              <span class="sh-icon teal"><i class="fas fa-thumbtack"></i></span>
+              <span>Mural</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── FINANCEIRO ──────────────────────────────────── -->
+      <div class="page" id="page-financeiro">
+        <div class="page-header">
+          <div>
+            <h2><i class="fas fa-coins"></i> Financeiro</h2>
+            <p class="page-sub">Gestão de cotas e arrecadação</p>
+          </div>
+          <div class="header-acts">
+            <select class="select-styled" id="fin-mes-sel" onchange="carregarCotas()"></select>
+            <button class="btn-outline sm priv-tesoureiro priv-vice-tes priv-representante" onclick="abrirModalMes()">
+              <i class="fas fa-calendar-plus"></i> Novo mês
+            </button>
+            <button class="btn-main sm priv-tesoureiro priv-vice-tes priv-representante" onclick="abrirModalLanc()">
+              <i class="fas fa-plus"></i> Registrar
+            </button>
+          </div>
+        </div>
+
+        <div class="fin-kpis">
+          <div class="fin-kpi">
+            <span class="fk-label">Total Arrecadado</span>
+            <strong class="fk-value gold" id="fc-total">R$ 0,00</strong>
+          </div>
+          <div class="fin-kpi">
+            <span class="fk-label">Pagos</span>
+            <strong class="fk-value green" id="fc-pagos">0</strong>
+          </div>
+          <div class="fin-kpi">
+            <span class="fk-label">Pendentes</span>
+            <strong class="fk-value rose" id="fc-pend">0</strong>
+          </div>
+          <div class="fin-kpi">
+            <span class="fk-label">Progresso</span>
+            <strong class="fk-value blue" id="fc-prog">0%</strong>
+          </div>
+        </div>
+
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="fin-progress" style="width:0%"></div>
+        </div>
+
+        <div id="fin-list" class="cotas-list"><div class="loading-state"><i class="fas fa-circle-notch fa-spin"></i> Carregando...</div></div>
+      </div>
+
+      <!-- ── IRMANDADE / MEMBROS ─────────────────────────── -->
+      <div class="page" id="page-membros">
+        <div class="page-header">
+          <div>
+            <h2><i class="fas fa-users"></i> Irmandade</h2>
+            <p class="page-sub">Gestão de membros e cargos</p>
+          </div>
+          <div class="header-acts">
+            <div class="search-bar">
+              <i class="fas fa-search"></i>
+              <input type="text" id="busca" placeholder="Buscar irmão..." oninput="filtrarMembros()">
+            </div>
+          </div>
+        </div>
+        <div class="cargo-filter" id="cargo-filter"></div>
+        <div class="membros-grid" id="membros-grid">
+          <div class="loading-state"><i class="fas fa-circle-notch fa-spin"></i> Carregando...</div>
+        </div>
+      </div>
+
+      <!-- ── AGENDA ──────────────────────────────────────── -->
+      <div class="page" id="page-agenda">
+        <div class="page-header">
+          <div>
+            <h2><i class="fas fa-calendar-days"></i> Agenda</h2>
+            <p class="page-sub">Eventos e reuniões</p>
+          </div>
+          <div class="header-acts">
+            <button class="btn-main sm priv-orador priv-representante priv-vice-rep priv-secretario" onclick="abrirModalEvento()">
+              <i class="fas fa-plus"></i> Novo evento
+            </button>
+          </div>
+        </div>
+        <div id="agenda-lista" class="agenda-lista">
+          <div class="loading-state"><i class="fas fa-circle-notch fa-spin"></i> Carregando...</div>
+        </div>
+      </div>
+
+      <!-- ── ARQUIVO DE MÍDIA ────────────────────────────── -->
+      <div class="page" id="page-midia">
+        <div class="page-header">
+          <div>
+            <h2><i class="fas fa-record-vinyl"></i> Arquivo</h2>
+            <p class="page-sub">Playlists, fotos e documentos</p>
+          </div>
+          <div class="header-acts">
+            <button class="btn-main sm priv-tesoureiro priv-secretario priv-representante priv-organizadora" onclick="abrirModalMidia()">
+              <i class="fas fa-plus"></i> Adicionar
+            </button>
+          </div>
+        </div>
+        <div class="midia-tabs">
+          <button class="mtab active" data-tipo="playlist"><i class="fab fa-spotify"></i> Playlists</button>
+          <button class="mtab" data-tipo="fotos"><i class="fas fa-images"></i> Fotos</button>
+          <button class="mtab" data-tipo="docs"><i class="fas fa-file-lines"></i> Documentos</button>
+        </div>
+        <div class="midia-grid" id="midia-grid">
+          <div class="loading-state"><i class="fas fa-circle-notch fa-spin"></i> Carregando...</div>
+        </div>
+      </div>
+
+      <!-- ── ELEIÇÕES ────────────────────────────────────── -->
+      <div class="page" id="page-votacao">
+        <div class="page-header">
+          <div>
+            <h2><i class="fas fa-scale-balanced"></i> Eleições</h2>
+            <p class="page-sub">Votações e mandatos</p>
+          </div>
+          <div class="header-acts">
+            <button class="btn-main sm priv-representante" onclick="abrirModalNovaEleicao()">
+              <i class="fas fa-plus"></i> Nova eleição
+            </button>
+          </div>
+        </div>
+        <div id="votacao-lista"><div class="loading-state"><i class="fas fa-circle-notch fa-spin"></i> Carregando...</div></div>
+      </div>
+
+      <!-- ── MURAL ───────────────────────────────────────── -->
+      <div class="page" id="page-mural">
+        <div class="page-header">
+          <div>
+            <h2><i class="fas fa-thumbtack"></i> Mural</h2>
+            <p class="page-sub">Avisos e comunicados</p>
+          </div>
+          <div class="header-acts">
+            <button class="btn-main sm priv-representante priv-vice-rep priv-secretario priv-orador" onclick="abrirModalAviso()">
+              <i class="fas fa-plus"></i> Novo aviso
+            </button>
+          </div>
+        </div>
+        <div id="mural-lista" class="mural-lista">
+          <div class="loading-state"><i class="fas fa-circle-notch fa-spin"></i> Carregando...</div>
+        </div>
+      </div>
+
+      <!-- ── ATAS ────────────────────────────────────────── -->
+      <div class="page" id="page-atas">
+        <div class="page-header">
+          <div>
+            <h2><i class="fas fa-scroll"></i> Atas</h2>
+            <p class="page-sub">Registro de reuniões e sessões</p>
+          </div>
+          <div class="header-acts">
+            <button class="btn-main sm priv-secretario priv-vice-sec priv-representante" onclick="abrirModalAta()">
+              <i class="fas fa-plus"></i> Nova ata
+            </button>
+          </div>
+        </div>
+        <div id="atas-lista" class="atas-lista">
+          <div class="loading-state"><i class="fas fa-circle-notch fa-spin"></i> Carregando...</div>
+        </div>
+      </div>
+
+      <!-- ── ADMIN ───────────────────────────────────────── -->
+      <div class="page" id="page-admin">
+        <div class="page-header">
+          <div>
+            <h2><i class="fas fa-shield-halved"></i> Administração</h2>
+            <p class="page-sub">Configurações e gestão da loja</p>
+          </div>
+        </div>
+        <div class="admin-grid">
+          <div class="admin-section">
+            <h3><i class="fas fa-user-gear"></i> Gestão de Cargos</h3>
+            <p>Atribua cargos e insígnias aos irmãos do grupo.</p>
+            <button class="btn-main sm" onclick="irPara('membros')">Gerenciar membros</button>
+          </div>
+          <div class="admin-section">
+            <h3><i class="fas fa-medal"></i> Insígnias Personalizadas</h3>
+            <p>Atribua reconhecimentos especiais aos irmãos.</p>
+            <button class="btn-main sm" onclick="abrirModalInsignia(null)">Atribuir insígnia</button>
+          </div>
+          <div class="admin-section priv-representante">
+            <h3><i class="fas fa-sliders"></i> Criar Cargo Personalizado</h3>
+            <p>O Representante pode criar novos cargos e definir seus acessos.</p>
+            <button class="btn-main sm" onclick="abrirModalCargoCuston()">Novo cargo</button>
+          </div>
+          <div class="admin-section priv-representante">
+            <h3><i class="fas fa-database"></i> Backup de Dados</h3>
+            <p>Exporte os dados do grupo para arquivo CSV.</p>
+            <button class="btn-main sm" onclick="exportarDados()">Exportar</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ═══ MODAIS ══════════════════════════════════════════════ -->
+
+<!-- Perfil -->
+<div class="modal-bg" id="modal-perfil">
+  <div class="modal modal-lg">
+    <div class="modal-head">
+      <h3>Perfil do Irmão</h3>
+      <button onclick="fecharModal('modal-perfil')"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="modal-perfil-body"></div>
+  </div>
+</div>
+
+<!-- Editar meu perfil -->
+<div class="modal-bg" id="modal-editar-perfil">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Editar meu perfil</h3>
+      <button onclick="fecharModal('modal-editar-perfil')"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="form-edit-perfil">
+      <div class="field"><label>Nome completo</label><input type="text" id="ep-nome"></div>
+      <div class="field"><label>Aniversário</label><input type="date" id="ep-bday"></div>
+      <div class="field"><label>Profissão</label><input type="text" id="ep-job"></div>
+      <div class="field"><label>WhatsApp</label><input type="text" id="ep-wpp"></div>
+      <div class="field"><label>Nova senha (deixe em branco para manter)</label><input type="password" id="ep-pass" placeholder="Nova senha"></div>
+      <div class="form-msg" id="ep-err"></div>
+      <div class="modal-btns">
+        <button type="button" class="btn-outline" onclick="fecharModal('modal-editar-perfil')">Cancelar</button>
+        <button type="submit" class="btn-main">Salvar alterações</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Promoção de cargo (admin) -->
+<div class="modal-bg" id="modal-promover">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Promover Irmão</h3>
+      <button onclick="fecharModal('modal-promover')"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="modal-promover-nome" style="font-weight:700;margin-bottom:12px;font-size:15px"></div>
+    <div class="field">
+      <label>Novo cargo</label>
+      <select id="promover-cargo" class="select-styled" style="width:100%"></select>
+    </div>
+    <div class="modal-btns">
+      <button type="button" class="btn-outline" onclick="fecharModal('modal-promover')">Cancelar</button>
+      <button class="btn-main" onclick="confirmarPromocao()">Confirmar promoção</button>
+    </div>
+  </div>
+</div>
+
+<!-- Registrar pagamento -->
+<div class="modal-bg" id="modal-lanc">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Registrar Pagamento</h3>
+      <button onclick="fecharModal('modal-lanc')"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="form-lanc">
+      <div class="field"><label>Irmão</label><select id="lanc-membro" class="select-styled" style="width:100%"></select></div>
+      <div class="field"><label>Mês de referência</label><select id="lanc-mes" class="select-styled" style="width:100%"></select></div>
+      <div class="field"><label>Valor pago (R$)</label><input type="number" id="lanc-valor" min="10" step="1" value="10"></div>
+      <div class="hint-box"><i class="fas fa-info-circle"></i> Valor mínimo R$ 10.</div>
+      <div class="form-msg" id="lanc-err"></div>
+      <div class="modal-btns">
+        <button type="button" class="btn-outline" onclick="fecharModal('modal-lanc')">Cancelar</button>
+        <button type="submit" class="btn-main"><i class="fas fa-check"></i> Confirmar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Novo mês -->
+<div class="modal-bg" id="modal-mes">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Criar novo mês</h3>
+      <button onclick="fecharModal('modal-mes')"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="form-mes">
+      <div class="field"><label>Mês / Ano</label><input type="month" id="novo-mes"></div>
+      <div class="hint-box"><i class="fas fa-info-circle"></i> Todos os irmãos entrarão como <strong>Pendente</strong> automaticamente.</div>
+      <div class="modal-btns">
+        <button type="button" class="btn-outline" onclick="fecharModal('modal-mes')">Cancelar</button>
+        <button type="submit" class="btn-main">Criar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Meta -->
+<div class="modal-bg" id="modal-meta">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Editar meta da confraternização</h3>
+      <button onclick="fecharModal('modal-meta')"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="form-meta">
+      <div class="field"><label>Valor alvo (R$)</label><input type="number" id="meta-input" min="1" step="10" value="500"></div>
+      <div class="modal-btns">
+        <button type="button" class="btn-outline" onclick="fecharModal('modal-meta')">Cancelar</button>
+        <button type="submit" class="btn-main">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Insígnia -->
+<div class="modal-bg" id="modal-insignia">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Atribuir insígnia</h3>
+      <button onclick="fecharModal('modal-insignia')"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="form-insignia">
+      <div class="field"><label>Irmão</label><select id="ins-membro" class="select-styled" style="width:100%"></select></div>
+      <div class="insignia-grid" id="ins-grid"></div>
+      <div class="modal-btns">
+        <button type="button" class="btn-outline" onclick="fecharModal('modal-insignia')">Cancelar</button>
+        <button type="submit" class="btn-main">Atribuir</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Mídia -->
+<div class="modal-bg" id="modal-midia-form">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Adicionar ao arquivo</h3>
+      <button onclick="fecharModal('modal-midia-form')"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="form-midia">
+      <div class="field"><label>Tipo</label>
+        <select id="m-tipo" class="select-styled" style="width:100%">
+          <option value="playlist">Playlist Spotify</option>
+          <option value="fotos">Álbum de fotos</option>
+          <option value="docs">Documento</option>
+        </select>
+      </div>
+      <div class="field"><label>Título</label><input type="text" id="m-titulo" placeholder="Nome do item"></div>
+      
+      <!-- UPLOAD DE ARQUIVO OU LINK -->
+      <div class="field">
+        <label>Arquivo ou Link</label>
+        <div class="upload-area" id="upload-area" onclick="document.getElementById('m-arquivo').click()">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p>Clique ou arraste o arquivo aqui</p>
+          <small>Máx. 25MB (ou insira um link abaixo)</small>
+          <input type="file" id="m-arquivo">
+        </div>
+        <div class="upload-progress" id="upload-progress">
+          <div class="upload-bar">
+            <div class="upload-fill" id="upload-fill"></div>
+          </div>
+          <div class="upload-status" id="upload-status">0%</div>
+        </div>
+      </div>
+
+      <div class="field"><label>Ou insira um Link</label><input type="url" id="m-url" placeholder="https://..."></div>
+      <div class="field"><label>Descrição (opcional)</label><input type="text" id="m-desc"></div>
+      <div class="form-msg" id="m-err"></div>
+      <div class="modal-btns">
+        <button type="button" class="btn-outline" onclick="fecharModal('modal-midia-form')">Cancelar</button>
+        <button type="submit" class="btn-main">Adicionar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Nova eleição -->
+<div class="modal-bg" id="modal-nova-eleicao">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Nova Eleição</h3>
+      <button onclick="fecharModal('modal-nova-eleicao')"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="form-nova-eleicao">
+      <div class="field"><label>Cargo em disputa</label>
+        <select id="el-cargo" class="select-styled" style="width:100%"></select>
+      </div>
+      <div class="field"><label>Descrição (opcional)</label><input type="text" id="el-desc" placeholder="Instruções ou contexto..."></div>
+      <div class="modal-btns">
+        <button type="button" class="btn-outline" onclick="fecharModal('modal-nova-eleicao')">Cancelar</button>
+        <button type="submit" class="btn-main">Abrir votação</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Votar -->
+<div class="modal-bg" id="modal-votar">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modal-votar-title">Votar</h3>
+      <button onclick="fecharModal('modal-votar')"><i class="fas fa-times"></i></button>
+    </div>
+    <p id="modal-votar-desc" style="font-size:13px;color:var(--muted);margin-bottom:16px"></p>
+    <div id="candidatos-list"></div>
+    <div class="hint-box" id="vot-ja-votou">
+      <i class="fas fa-check-circle"></i> Você já registrou seu voto nesta eleição.
+    </div>
+    <div class="form-msg" id="vot-err"></div>
+  </div>
+</div>
+
+<!-- Evento -->
+<div class="modal-bg" id="modal-evento">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Novo Evento</h3>
+      <button onclick="fecharModal('modal-evento')"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="form-evento">
+      <div class="field"><label>Título do evento</label><input type="text" id="ev-titulo" placeholder="Ex: Reunião mensal"></div>
+      <div class="fields-2col">
+        <div class="field"><label>Data</label><input type="date" id="ev-data"></div>
+        <div class="field"><label>Hora</label><input type="time" id="ev-hora" value="20:00"></div>
+      </div>
+      <div class="field"><label>Local</label><input type="text" id="ev-local" placeholder="Ex: Sede da loja"></div>
+      <div class="field"><label>Tipo</label>
+        <select id="ev-tipo" class="select-styled" style="width:100%">
+          <option value="reuniao">Reunião</option>
+          <option value="sessao">Sessão</option>
+          <option value="confraternizacao">Confraternização</option>
+          <option value="outro">Outro</option>
+        </select>
+      </div>
+      <div class="field"><label>Descrição</label><textarea id="ev-desc" rows="3" placeholder="Detalhes do evento..." style="width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;resize:vertical;background:var(--input-bg);color:var(--text)"></textarea></div>
+      <div class="form-msg" id="ev-err"></div>
+      <div class="modal-btns">
+        <button type="button" class="btn-outline" onclick="fecharModal('modal-evento')">Cancelar</button>
+        <button type="submit" class="btn-main">Criar evento</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Aviso / Mural -->
+<div class="modal-bg" id="modal-aviso">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Novo Aviso</h3>
+      <button onclick="fecharModal('modal-aviso')"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="form-aviso">
+      <div class="field"><label>Título</label><input type="text" id="av-titulo" placeholder="Assunto do aviso"></div>
+      <div class="field"><label>Conteúdo</label>
+        <textarea id="av-corpo" rows="4" placeholder="Mensagem do aviso..." style="width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;resize:vertical;background:var(--input-bg);color:var(--text)"></textarea>
+      </div>
+      <div class="field"><label>Prioridade</label>
+        <select id="av-prio" class="select-styled" style="width:100%">
+          <option value="normal">Normal</option>
+          <option value="importante">Importante</option>
+          <option value="urgente">Urgente</option>
+        </select>
+      </div>
+      <div class="form-msg" id="av-err"></div>
+      <div class="modal-btns">
+        <button type="button" class="btn-outline" onclick="fecharModal('modal-aviso')">Cancelar</button>
+        <button type="submit" class="btn-main">Publicar aviso</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Ata -->
+<div class="modal-bg" id="modal-ata">
+  <div class="modal modal-lg">
+    <div class="modal-head">
+      <h3>Nova Ata</h3>
+      <button onclick="fecharModal('modal-ata')"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="form-ata">
+      <div class="fields-2col">
+        <div class="field"><label>Data da reunião</label><input type="date" id="ata-data"></div>
+        <div class="field"><label>Número da reunião</label><input type="text" id="ata-num" placeholder="Ex: 001/2025"></div>
+      </div>
+      <div class="field"><label>Assuntos tratados</label>
+        <textarea id="ata-corpo" rows="6" placeholder="Descreva os pontos discutidos na reunião..." style="width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;resize:vertical;background:var(--input-bg);color:var(--text)"></textarea>
+      </div>
+      <div class="field"><label>Deliberações</label>
+        <textarea id="ata-delib" rows="3" placeholder="Decisões tomadas..." style="width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;resize:vertical;background:var(--input-bg);color:var(--text)"></textarea>
+      </div>
+      <div class="form-msg" id="ata-err"></div>
+      <div class="modal-btns">
+        <button type="button" class="btn-outline" onclick="fecharModal('modal-ata')">Cancelar</button>
+        <button type="submit" class="btn-main">Registrar ata</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Cargo customizado (Representante) -->
+<div class="modal-bg" id="modal-cargo-custom">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Criar Cargo Personalizado</h3>
+      <button onclick="fecharModal('modal-cargo-custom')"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="form-cargo-custom">
+      <div class="field"><label>Nome do cargo</label><input type="text" id="cc-nome" placeholder="Ex: Diácono, Capitão..."></div>
+      <div class="field"><label>Acessos concedidos</label>
+        <div class="access-checks" id="access-checks">
+          <label class="check-item"><input type="checkbox" value="financeiro"> Ver financeiro</label>
+          <label class="check-item"><input type="checkbox" value="lancar-pag"> Lançar pagamentos</label>
+          <label class="check-item"><input type="checkbox" value="gerenciar_membros"> Gerenciar membros</label>
+          <label class="check-item"><input type="checkbox" value="publicar_mural"> Publicar no mural</label>
+          <label class="check-item"><input type="checkbox" value="criar_eventos"> Criar eventos</label>
+          <label class="check-item"><input type="checkbox" value="registrar_atas"> Registrar atas</label>
+          <label class="check-item"><input type="checkbox" value="atribuir_insignias"> Atribuir insígnias</label>
+          <label class="check-item"><input type="checkbox" value="gerenciar_midia"> Gerenciar arquivo</label>
+        </div>
+      </div>
+      <div class="form-msg" id="cc-err"></div>
+      <div class="modal-btns">
+        <button type="button" class="btn-outline" onclick="fecharModal('modal-cargo-custom')">Cancelar</button>
+        <button type="submit" class="btn-main">Criar cargo</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Painel de notificações -->
+<div id="notif-panel" class="notif-panel">
+  <div class="notif-header">
+    <strong>Notificações</strong>
+    <button onclick="toggleNotifs()" class="notif-close"><i class="fas fa-times"></i></button>
+  </div>
+  <div id="notif-list" class="notif-list">
+    <p class="empty-state">Nenhuma notificação.</p>
+  </div>
+</div>
+<div class="notif-overlay" id="notif-overlay" onclick="toggleNotifs()"></div>
+
+<div id="toasts"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
+<script src="mobile.js"></script>
+</body>
+</html>
