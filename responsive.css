@@ -999,9 +999,9 @@
 /* ══ LOGIN OPTIMIZATION ════════════════════════════════ */
 @media (max-width: 768px) {
   /* Otimizar card de login/registro */
-  .login-wrap { padding: 14px; }
+  .login-wrap { padding: 12px; }
   .card { padding: 18px; }
-  .login-top { margin-bottom: 18px; }
+  .login-top { margin-bottom: 14px; }
   .field { margin-bottom: 10px; }
   .field label { font-size: 10px; margin-bottom: 4px; }
   .fields-2col { gap: 0 8px; }
@@ -1012,9 +1012,9 @@
 
 @media (max-width: 480px) {
   /* Reduzir tamanho em smartphones */
-  .login-wrap { padding: 12px; max-width: 90vw; }
+  .login-wrap { padding: 10px; max-width: 90vw; }
   .card { padding: 14px; }
-  .login-top { margin-bottom: 14px; }
+  .login-top { margin-bottom: 10px; }
   .field { margin-bottom: 8px; }
   .field label { font-size: 9px; margin-bottom: 3px; }
   .fields-2col { gap: 0 6px; }
@@ -1026,9 +1026,9 @@
 
 @media (max-width: 360px) {
   /* Ultra compacto para celulares pequenos */
-  .login-wrap { padding: 10px; max-width: 88vw; }
+  .login-wrap { padding: 8px; max-width: 88vw; }
   .card { padding: 12px; }
-  .login-top { margin-bottom: 12px; }
+  .login-top { margin-bottom: 8px; }
   .field { margin-bottom: 6px; }
   .field label { font-size: 8px; margin-bottom: 2px; }
   .fields-2col { gap: 0 4px; }
