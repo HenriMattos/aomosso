@@ -456,53 +456,93 @@
   }
 
   /* Login */
+  #screen-login {
+    padding: 0;
+    min-height: 100vh;
+  }
+
   .login-wrap {
-    padding: 12px;
-    max-width: 320px;
+    padding: 8px;
+    max-width: 290px;
+    max-height: 90vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .login-top {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
 
   .login-title {
-    font-size: 22px;
-    margin-bottom: 2px;
+    font-size: 20px;
+    margin-bottom: 1px;
   }
 
   .login-sub {
-    font-size: 10px;
+    font-size: 9px;
   }
 
   .login-emblem {
-    width: 50px;
-    height: 50px;
-    font-size: 18px;
-    margin-bottom: 10px;
+    width: 45px;
+    height: 45px;
+    font-size: 16px;
+    margin-bottom: 8px;
   }
 
   .card {
-    padding: 14px 12px;
+    padding: 12px 10px;
+    max-height: 70vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tab-row {
+    margin-bottom: 14px;
+    padding: 3px;
+    gap: 2px;
   }
 
   .tab {
-    padding: 8px 4px;
+    padding: 7px 3px;
     font-size: 11px;
   }
 
   .field {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
   .field label {
-    font-size: 10px;
-    margin-bottom: 4px;
+    font-size: 9px;
+    margin-bottom: 3px;
   }
 
   .field input,
   .field select,
   .field textarea {
-    font-size: 14px !important;
+    font-size: 16px !important;
+    padding: 10px 10px !important;
+    line-height: 1.2;
+  }
+
+  .fields-2col {
+    gap: 6px 10px;
+  }
+
+  .hint-box {
+    font-size: 11px;
+    padding: 8px 10px;
+    margin: 8px 0;
+  }
+
+  .form-msg {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+
+  .btn-main {
+    padding: 10px 12px;
+    font-size: 13px;
+    height: 42px;
   }
 }
 
@@ -714,8 +754,11 @@
 @media (max-width: 360px) {
 
   .login-wrap {
-    padding: 10px;
-    max-width: 290px;
+    padding: 6px;
+    max-width: 280px;
+    max-height: 90vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .login-title {
@@ -723,14 +766,70 @@
   }
 
   .login-emblem {
-    width: 45px;
-    height: 45px;
-    font-size: 16px;
-    margin-bottom: 8px;
+    width: 42px;
+    height: 42px;
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .login-top {
+    margin-bottom: 10px;
   }
 
   .card {
-    padding: 12px 10px;
+    padding: 10px 8px;
+    max-height: 70vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tab {
+    padding: 6px 2px;
+    font-size: 10px;
+  }
+
+  .field {
+    margin-bottom: 6px;
+  }
+
+  .field label {
+    font-size: 8px;
+    margin-bottom: 2px;
+    gap: 4px;
+  }
+
+  .field label i {
+    font-size: 8px;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 16px !important;
+    padding: 9px 8px !important;
+  }
+
+  .fields-2col {
+    gap: 5px 8px;
+  }
+
+  .hint-box {
+    font-size: 10px;
+    padding: 6px 8px;
+    margin: 6px 0;
+    display: none;
+  }
+
+  .form-msg {
+    font-size: 10px;
+    margin-bottom: 5px;
+  }
+
+  .btn-main {
+    padding: 9px 10px;
+    font-size: 12px;
+    height: 40px;
+    min-height: 40px;
   }
 
   .kpi-row {

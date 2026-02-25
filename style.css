@@ -138,7 +138,23 @@ html, body {
 @media(max-width:768px) {
   .field input, .select-styled {
     font-size:16px; /* Previne zoom em iOS */
-    padding:12px 14px;
+    padding:11px 12px;
+    line-height:1.4;
+    height: 42px;
+  }
+}
+@media(max-width:480px) {
+  .field input, .select-styled {
+    font-size:16px;
+    padding:10px 10px;
+    height: 40px;
+  }
+}
+@media(max-width:360px) {
+  .field input, .select-styled {
+    font-size:16px;
+    padding:9px 8px;
+    height: 38px;
   }
 }
 .field input:focus, .select-styled:focus {
@@ -177,11 +193,19 @@ html, body {
 .btn-main.sm { padding:8px 14px; font-size:13px; }
 
 @media(max-width:768px) {
-  .btn-main { padding:12px 18px; min-height:44px; }
+  .btn-main { padding:10px 16px; min-height:40px; font-size:13px; }
   .btn-main.full { width:100%; }
-  .btn-outline { padding:11px 16px; min-height:44px; }
+  .btn-outline { padding:10px 14px; min-height:40px; }
   .btn-ghost { min-height:32px; }
-  .btn-main.sm, .btn-outline.sm { min-height:40px; }
+  .btn-main.sm, .btn-outline.sm { min-height:38px; }
+}
+@media(max-width:480px) {
+  .btn-main { padding:9px 14px; min-height:38px; font-size:12px; }
+  .btn-outline { padding:9px 12px; min-height:38px; font-size:12px; }
+}
+@media(max-width:360px) {
+  .btn-main { padding:8px 12px; min-height:36px; font-size:11px; gap:4px; }
+  .btn-outline { padding:8px 10px; min-height:36px; font-size:11px; }
 }
 .btn-main.gold {
   background:linear-gradient(135deg, var(--gold-dk), var(--gold));
